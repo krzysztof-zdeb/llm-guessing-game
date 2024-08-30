@@ -12,6 +12,17 @@ models:
     - "gpt-4o" # $0.15/1M input tokens, $0.50/1M output tokens
 
 game:
-  character_to_guess: ""
   max_questions: 30
   num_rounds: 3
+  characters_to_guess:
+    - "Sherlock Holmes"
+    - "Harry Potter"
+    - "Darth Vader"
+    - "Cleopatra"
+    - "Willy Wonka"
+    - "Stefan Banach"
+    - "Joan of Arc"
+    - "Waldo"
+    - "Beowulf"
+    - "Nicola Tesla"
+    - "Zaphod Beeblebrox"

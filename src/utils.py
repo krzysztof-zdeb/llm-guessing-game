@@ -42,17 +42,3 @@ def send_prompt(client: OpenAI, model_name: str, prompt: str) -> str:
     except Exception as e:
         logger.error(f"Error sending prompt: {e}")
         raise
-
-def get_character_to_guess(client: OpenAI, model: str) -> str:
-    """
-    Get a character to guess from the OpenAI API.
-    
-    Args:
-        client (OpenAI): The OpenAI client instance.
-        model (str): The name of the model to use.
-    
-    Returns:
-        str: The character to guess.
-    """
-    prompt = build_guess_character_prompt()
-    return send_prompt(client, model, prompt)

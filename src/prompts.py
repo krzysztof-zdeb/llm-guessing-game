@@ -1,20 +1,5 @@
 from typing import List, Tuple
 
-def build_guess_character_prompt() -> str:
-    """
-    Build the prompt for guessing a character.
-    
-    Returns:
-        str: The prompt for guessing a character.
-    """
-    return (
-        "You are participating in a guessing game. Your task is to think of a well-known character "
-        "from fiction, history, or popular culture. This character should be recognizable to a wide audience. "
-        "Be creative and think of a character that is not too obscure or well-known. "
-        "Please provide the name of the character you've chosen. "
-        "Provide only the character name, do not include any other text. "
-    )
-
 def generate_game_history(history: List[Tuple[str, str]]) -> str:
     """
     Generate a string representation of the game history.

@@ -13,7 +13,7 @@ class Config:
         self.API_BASE: str = self._config["api"]["base_url"]
         self.API_KEY: str = os.getenv(self._config["api"]["key"].strip("${}"))
         self.MODELS: Dict[str, str | List[str]] = self._config["models"]
-        self.CHARACTER_TO_GUESS: str = self._config["game"]["character_to_guess"]
+        self.CHARACTERS_TO_GUESS: List[str] = self._config["game"]["characters_to_guess"]
         self.MAX_QUESTIONS: int = self._config["game"]["max_questions"]
         self.NUM_ROUNDS: int = self._config["game"]["num_rounds"]
 
