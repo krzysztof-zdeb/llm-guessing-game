@@ -6,7 +6,7 @@ def main():
         game = GuessingGame()
         game.play_game()
     except Exception as e:
-        logger.error(f"An error occurred during the game: {e}")
+        logger.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()

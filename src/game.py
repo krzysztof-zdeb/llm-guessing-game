@@ -1,21 +1,24 @@
 from utils import get_openai_client, send_prompt, get_character_to_guess
-from config import Config
+from config import config
 from prompts import build_guesser_prompt, build_judge_prompt
-from logger import logger
 from typing import List, Tuple
+from logger import logger
 
 class GuessingGame:
 
     def __init__(self):
         self.client = get_openai_client()
-        self.judge_model: str = Config.MODELS["judge"]
-        self.guesser_models: List[str] = Config.MODELS["guessers"]
-        self.character: str = Config.CHARACTER_TO_GUESS or get_character_to_guess(self.client, self.judge_model)
-        self.max_questions: int = Config.MAX_QUESTIONS
-        self.num_rounds: int = Config.NUM_ROUNDS
+        self.judge_model: str = config.MODELS["judge"]
+        self.guesser_models: List[str] = config.MODELS["guessers"]
+        self.character: str = config.CHARACTER_TO_GUESS or get_character_to_guess(self.client, self.judge_model)
+        self.max_questions: int = config.MAX_QUESTIONS
+        self.num_rounds: int = config.NUM_ROUNDS
         self.history: List[Tuple[str, str]] = []
 
     def play_game(self) -> None:
+        """
+        Play the guessing game for the specified number of rounds.
+        """
         for game_round in range(self.num_rounds):
             logger.info(f"--- Round {game_round + 1} ---")
             logger.info(f"The character is: {self.character}")
@@ -28,16 +31,10 @@ class GuessingGame:
                 while question_count < self.max_questions:
                     question_count += 1
                     
-                    # Generate question using the guesser model
-                    guesser_prompt = build_guesser_prompt(self.history)
-                    question = send_prompt(self.client, guesser_model, guesser_prompt)
+                    question = self._get_question(guesser_model)
                     logger.info(f"Q#{question_count}: {question}")
 
-                    # Get answer from the judge
-                    judge_prompt = build_judge_prompt(self.character, self.history, question)
-                    answer = send_prompt(self.client, self.judge_model, judge_prompt)
-                    
-                    self.history.append((question, answer))
+                    answer = self._get_answer(question)
                     logger.info(f"A: {answer}")
 
                     if answer.lower() == "bravo":
@@ -47,5 +44,30 @@ class GuessingGame:
                 if question_count == self.max_questions:
                     logger.info(f"{guesser_model} has reached the maximum number of questions without guessing correctly.")
 
-            if game_round < self.num_rounds - 1:
-                self.character = get_character_to_guess(self.client, self.judge_model)
+    def _get_question(self, guesser_model: str) -> str:
+        """
+        Get a question from the guesser model.
+        
+        Args:
+            guesser_model (str): The name of the guesser model.
+        
+        Returns:
+            str: The question from the guesser model.
+        """
+        guesser_prompt = build_guesser_prompt(self.history)
+        return send_prompt(self.client, guesser_model, guesser_prompt)
+
+    def _get_answer(self, question: str) -> str:
+        """
+        Get an answer from the judge model.
+        
+        Args:
+            question (str): The question to answer.
+        
+        Returns:
+            str: The answer from the judge model.
+        """
+        judge_prompt = build_judge_prompt(self.character, self.history, question)
+        answer = send_prompt(self.client, self.judge_model, judge_prompt)
+        self.history.append((question, answer))
+        return answer
