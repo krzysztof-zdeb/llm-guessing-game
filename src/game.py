@@ -21,12 +21,17 @@ class GuessingGame:
         """
         Play the guessing game for the specified number of rounds.
         """
-        for game_round in range(self.num_rounds):
-            logger.info(f"--- Round {game_round + 1} ---")
-            logger.info(f"The character is: {self.character}")
 
-            for guesser_model in self.guesser_models:
-                logger.info(f"\n{guesser_model} is now guessing:")
+        logger.info(f"The character is: {self.character}")
+
+
+        for guesser_model in self.guesser_models:
+
+            logger.info(f"=== {guesser_model} is now guessing ===")
+
+            for game_round in range(self.num_rounds):
+                logger.info(f"-- Round {game_round + 1} --")
+
                 question_count = 0
                 self.history = []
 
