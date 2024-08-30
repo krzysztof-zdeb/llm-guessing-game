@@ -1,5 +1,5 @@
 import logging
-from typing import Logger
+from logging import Logger
 
 def setup_logger() -> Logger:
     logging.basicConfig(

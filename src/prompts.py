@@ -11,7 +11,8 @@ def build_guess_character_prompt() -> str:
         "You are participating in a guessing game. Your task is to think of a well-known character "
         "from fiction, history, or popular culture. This character should be recognizable to a wide audience. "
         "Be creative and think of a character that is not too obscure or well-known. "
-        "Please provide the name of the character you've chosen."
+        "Please provide the name of the character you've chosen. "
+        "Provide only the character name, do not include any other text. "
     )
 
 def generate_game_history(history: List[Tuple[str, str]]) -> str:
@@ -26,12 +27,13 @@ def generate_game_history(history: List[Tuple[str, str]]) -> str:
     """
     return "\n".join([f"- Q: {q} - A: {a}" for q, a in history])
 
-def build_guesser_prompt(history: List[Tuple[str, str]]) -> str:
+def build_guesser_prompt(history: List[Tuple[str, str]], last_dunno: str) -> str:
     """
     Build the prompt for the guesser model.
     
     Args:
         history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+        last_dunno (str): The last question, if the answer to it was 'Dunno'.
     
     Returns:
         str: The prompt for the guesser model.
@@ -49,15 +51,23 @@ def build_guesser_prompt(history: List[Tuple[str, str]]) -> str:
             "Remember to consider all previous questions and answers before forming your next question. "
             "Do not ask the same question twice. "
             "Avoid enumerating titles of series or franchises. Instead try to narrow down the character by asking about their traits or actions. "
-            "You can only ask one question. "
-            "Provide only question, do not include any other text. "
-            "What is your next question?"
-            # "The last question you asked was either too vague, ambiguous, or not directly related to identifying the character. "
+            "You can only ask one question at a time. "
+            "If based on the questions and answers so far, you know the character, provide its name. "
+            "Don't ask excessive questions if you already have a good idea of the character. Just provide its name. "
         )
     
-    # prompt += (
-    #     "Please rephrase or clarify your question so that it can be answered with a clear 'Yes' or 'No.' "
-    # )
+        if last_dunno:
+            prompt += (
+                "The last question you asked was either too vague, ambiguous, or not directly related to identifying the character. "
+                "Please rephrase or clarify your question so that it can be answered with a clear 'Yes' or 'No.' "
+            )
+
+        prompt += "What is your next question? "
+    else:
+        prompt += "What is your first question? "
+
+    prompt += "Provide only question, do not include any other text."
+
     return prompt
 
 def build_judge_prompt(character: str, history: List[Tuple[str, str]], question: str) -> str:
@@ -77,10 +87,10 @@ def build_judge_prompt(character: str, history: List[Tuple[str, str]], question:
         "by asking closed questions. Your role is to answer questions based on your knowledge of the character.\n\n"
         f"The character is: {character}.\n\n"
         "Respond with 'Yes' or 'No' based on the accuracy of the question in relation to the character. "
-        "If the question is unclear, too vague, or does not directly apply to the character, respond with 'Dunno'. "
-        "If the question properly indicates the character to be guessed, respond with 'Bravo'. "
-        "You can only answer with 'Bravo' if the question is clear, specific, and directly related to the character and not the movie or book the character is from. "
         "Your answers must be consistent with the character's traits, actions, and known information. "
+        "Answer with 'Bravo' if the question is clear, specific, and the character name is directlymentioned in the question. "
+        "If the question is unclear, too vague, or does not directly apply to the character, respond with 'Dunno'. "
+        "If more than one question is asked, respond with 'Dunno'. "
     )
 
     if history:

@@ -1,7 +1,8 @@
-from utils import get_openai_client, send_prompt, get_character_to_guess
+from typing import List, Tuple
+from openai import OpenAI
 from config import config
 from prompts import build_guesser_prompt, build_judge_prompt
-from typing import List, Tuple
+from utils import get_openai_client, send_prompt, get_character_to_guess
 from logger import logger
 
 class GuessingGame:
@@ -14,6 +15,7 @@ class GuessingGame:
         self.max_questions: int = config.MAX_QUESTIONS
         self.num_rounds: int = config.NUM_ROUNDS
         self.history: List[Tuple[str, str]] = []
+        self.last_dunno: str = ""
 
     def play_game(self) -> None:
         """
@@ -35,11 +37,19 @@ class GuessingGame:
                     logger.info(f"Q#{question_count}: {question}")
 
                     answer = self._get_answer(question)
+                    if answer.lower() == "bravo" and self.character.lower() not in question.lower():
+                        # Change the answer to "yes" if the character name is not in the answer
+                         answer = "Yes"
                     logger.info(f"A: {answer}")
-
                     if answer.lower() == "bravo":
                         logger.info(f"{guesser_model} has guessed correctly!")
                         break
+
+                    if answer.lower() == "dunno":
+                        self.last_dunno = question
+                    else:
+                        self.history.append((question, answer))
+                        self.last_dunno = ""
 
                 if question_count == self.max_questions:
                     logger.info(f"{guesser_model} has reached the maximum number of questions without guessing correctly.")
@@ -54,7 +64,7 @@ class GuessingGame:
         Returns:
             str: The question from the guesser model.
         """
-        guesser_prompt = build_guesser_prompt(self.history)
+        guesser_prompt = build_guesser_prompt(self.history, self.last_dunno)
         return send_prompt(self.client, guesser_model, guesser_prompt)
 
     def _get_answer(self, question: str) -> str:
@@ -69,5 +79,4 @@ class GuessingGame:
         """
         judge_prompt = build_judge_prompt(self.character, self.history, question)
         answer = send_prompt(self.client, self.judge_model, judge_prompt)
-        self.history.append((question, answer))
         return answer

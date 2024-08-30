@@ -3,13 +3,13 @@ api:
   key: ${OPENAI_API_KEY}
 
 models:
-  judge: "gpt-4o"
+  judge: "gpt-4o-mini"
   guessers:
     # - "gpt-4" # $30.00/1M input tokens, $60.00/1M output tokens
     # - "gpt-4-turbo" # $10.00/1M input tokens, $30.00/1M output tokens
     # - "gpt-4o" # $5.00/1M input tokens, $15.00/1M output tokens
     # - "gpt-3.5-turbo" # $3.00/1M input tokens, $6.00/1M output tokens
-    - "gpt-4o-mini" # $0.15/1M input tokens, $0.50/1M output tokens
+    - "gpt-4o" # $0.15/1M input tokens, $0.50/1M output tokens
 
 game:
   character_to_guess: ""
