@@ -1,23 +1,23 @@
 from typing import List, Tuple
 
-def generate_game_history(history: List[Tuple[str, str]]) -> str:
+def generate_game_history(history: List[Tuple[int, str, str]]) -> str:
     """
     Generate a string representation of the game history.
     
     Args:
-        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+        history (List[Tuple[int, str, str]]): List of question-answer pairs processed so far.
     
     Returns:
         str: Formatted game history.
     """
-    return "\n".join([f"- Q: {q} - A: {a}" for q, a in history])
+    return "\n".join([f"- Q: {q} - A: {a}" for i, q, a in history])
 
-def build_guesser_prompt(history: List[Tuple[str, str]], last_dunno: str) -> str:
+def build_guesser_prompt(history: List[Tuple[int, str, str]], last_dunno: str) -> str:
     """
     Build the prompt for the guesser model.
     
     Args:
-        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+        history (List[Tuple[int, str, str]]): List of question-answer pairs processed so far.
         last_dunno (str): The last question, if the answer to it was 'Dunno'.
     
     Returns:
@@ -55,13 +55,13 @@ def build_guesser_prompt(history: List[Tuple[str, str]], last_dunno: str) -> str
 
     return prompt
 
-def build_judge_prompt(character: str, history: List[Tuple[str, str]], question: str) -> str:
+def build_judge_prompt(character: str, history: List[Tuple[int, str, str]], question: str) -> str:
     """
     Build the prompt for the judge model.
     
     Args:
         character (str): The character to be guessed.
-        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+        history (List[Tuple[int, str, str]]): List of question-answer pairs processed so far.
         question (str): The current question to be answered.
     
     Returns:

@@ -166,3 +166,5 @@ cython_debug/
 # uv
 .venv/
 .uv/
+
+game_history.db

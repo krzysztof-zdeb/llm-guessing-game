@@ -8,21 +8,32 @@ models:
     # - "gpt-4" # $30.00/1M input tokens, $60.00/1M output tokens
     # - "gpt-4-turbo" # $10.00/1M input tokens, $30.00/1M output tokens
     # - "gpt-4o" # $5.00/1M input tokens, $15.00/1M output tokens
-    # - "gpt-3.5-turbo" # $3.00/1M input tokens, $6.00/1M output tokens
-    - "gpt-4o" # $0.15/1M input tokens, $0.50/1M output tokens
+    - "gpt-3.5-turbo" # $3.00/1M input tokens, $6.00/1M output tokens
+    - "gpt-4o-mini" # $0.15/1M input tokens, $0.50/1M output tokens
 
 game:
   max_questions: 30
   num_rounds: 3
   characters_to_guess:
-    - "Sherlock Holmes"
-    - "Harry Potter"
-    - "Darth Vader"
-    - "Cleopatra"
-    - "Willy Wonka"
-    - "Stefan Banach"
-    - "Joan of Arc"
-    - "Waldo"
-    - "Beowulf"
-    - "Nicola Tesla"
-    - "Zaphod Beeblebrox"
+    - primary: "Sherlock Holmes"
+      aliases: []
+    - primary: "Harry Potter"
+      aliases: []
+    - primary: "Darth Vader"
+      aliases: ["Anakin Skywalker"]
+    - primary: "Cleopatra"
+      aliases: []
+    - primary: "Willy Wonka"
+      aliases: []
+    - primary: "Stefan Banach"
+      aliases: []
+    - primary: "Joan of Arc"
+      aliases: ["Jeanne d'Arc"]
+    - primary: "Waldo"
+      aliases: []
+    - primary: "Beowulf"
+      aliases: []
+    - primary: "Nikola Tesla"
+      aliases: ["Nicola Tesla"]
+    - primary: "Zaphod Beeblebrox"
+      aliases: []

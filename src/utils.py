@@ -1,6 +1,5 @@
 from openai import OpenAI
 from config import config
-from prompts import build_guess_character_prompt
 from typing import Any
 from logger import logger
 
