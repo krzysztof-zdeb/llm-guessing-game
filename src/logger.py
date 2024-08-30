@@ -1,6 +1,7 @@
 import logging
+from typing import Logger
 
-def setup_logger():
+def setup_logger() -> Logger:
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

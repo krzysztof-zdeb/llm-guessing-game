@@ -1,16 +1,41 @@
-def build_guess_character_prompt():
-    prompt = (
+from typing import List, Tuple
+
+def build_guess_character_prompt() -> str:
+    """
+    Build the prompt for guessing a character.
+    
+    Returns:
+        str: The prompt for guessing a character.
+    """
+    return (
         "You are participating in a guessing game. Your task is to think of a well-known character "
         "from fiction, history, or popular culture. This character should be recognizable to a wide audience. "
         "Be creative and think of a character that is not too obscure or well-known. "
         "Please provide the name of the character you've chosen."
     )
-    return prompt
 
-def generate_game_history(history):
+def generate_game_history(history: List[Tuple[str, str]]) -> str:
+    """
+    Generate a string representation of the game history.
+    
+    Args:
+        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+    
+    Returns:
+        str: Formatted game history.
+    """
     return "\n".join([f"- Q: {q} - A: {a}" for q, a in history])
 
-def build_guesser_prompt(history):
+def build_guesser_prompt(history: List[Tuple[str, str]]) -> str:
+    """
+    Build the prompt for the guesser model.
+    
+    Args:
+        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+    
+    Returns:
+        str: The prompt for the guesser model.
+    """
     prompt = (
         "You are participating in a guessing game where your goal is to identify a specific character. "
         "You have been asking questions to narrow down who the character might be. "
@@ -18,7 +43,6 @@ def build_guesser_prompt(history):
     
     if history:
         game_history = generate_game_history(history)
-
         prompt += (
             "Below are the questions you have asked so far and their corresponding answers.\n\n"
             f"{game_history}\n\n"
@@ -36,7 +60,18 @@ def build_guesser_prompt(history):
     # )
     return prompt
 
-def build_judge_prompt(character, history, question):
+def build_judge_prompt(character: str, history: List[Tuple[str, str]], question: str) -> str:
+    """
+    Build the prompt for the judge model.
+    
+    Args:
+        character (str): The character to be guessed.
+        history (List[Tuple[str, str]]): List of question-answer pairs processed so far.
+        question (str): The current question to be answered.
+    
+    Returns:
+        str: The prompt for the judge model.
+    """
     prompt = (
         "You are participating in a guessing game where another model will attempt to guess a specific character "
         "by asking closed questions. Your role is to answer questions based on your knowledge of the character.\n\n"
@@ -50,7 +85,6 @@ def build_judge_prompt(character, history, question):
 
     if history:
         game_history = generate_game_history(history)
-
         prompt += (
             "Make sure your answer is coherent with the previous answers which are:\n\n"
             f"{game_history}\n\n"
