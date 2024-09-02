@@ -1,0 +1,39 @@
+api:
+  base_url: "https://api.openai.com/v1"
+  key: ${OPENAI_API_KEY}
+
+models:
+  judge: "gpt-4o"
+  guessers:
+    - "gpt-4" # $30.00/1M input tokens, $60.00/1M output tokens
+    - "gpt-4-turbo" # $10.00/1M input tokens, $30.00/1M output tokens
+    - "gpt-4o" # $5.00/1M input tokens, $15.00/1M output tokens
+    - "gpt-3.5-turbo" # $3.00/1M input tokens, $6.00/1M output tokens
+    - "gpt-4o-mini" # $0.15/1M input tokens, $0.50/1M output tokens
+
+game:
+  max_questions: 30
+  num_rounds: 3
+  characters_to_guess:
+    - primary: "Sherlock Holmes"
+      aliases: []
+    - primary: "Harry Potter"
+      aliases: []
+    - primary: "Darth Vader"
+      aliases: ["Anakin Skywalker"]
+    - primary: "Cleopatra"
+      aliases: []
+    - primary: "Willy Wonka"
+      aliases: []
+    - primary: "Stefan Banach"
+      aliases: []
+    - primary: "Joan of Arc"
+      aliases: ["Jeanne d'Arc"]
+    - primary: "Wally"
+      aliases: ["Waldo"]
+    - primary: "Beowulf"
+      aliases: []
+    - primary: "Nikola Tesla"
+      aliases: ["Nicola Tesla"]
+    - primary: "Zaphod Beeblebrox"
+      aliases: []
