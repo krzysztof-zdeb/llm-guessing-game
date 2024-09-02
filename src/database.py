@@ -13,7 +13,8 @@ class Database:
             CREATE TABLE IF NOT EXISTS game_rounds (
                 _sk INTEGER PRIMARY KEY AUTOINCREMENT,
                 character_name TEXT,
-                model_name TEXT,
+                guesser_model_name TEXT,
+                judge_model_name TEXT,
                 questions_asked_count INTEGER,
                 did_succeeded_indicator BOOLEAN
             )
@@ -30,11 +31,11 @@ class Database:
         ''')
         self.conn.commit()
 
-    def insert_game_round(self, character_name: str, model_name: str) -> int:
+    def insert_game_round(self, character_name: str, guesser_model_name: str, judge_model_name: str) -> int:
         self.cursor.execute('''
-            INSERT INTO game_rounds (character_name, model_name)
-            VALUES (?, ?)
-        ''', (character_name, model_name))
+            INSERT INTO game_rounds (character_name, guesser_model_name, judge_model_name)
+            VALUES (?, ?, ?)
+        ''', (character_name, guesser_model_name, judge_model_name))
         self.conn.commit()
         return self.cursor.lastrowid
 

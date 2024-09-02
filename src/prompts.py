@@ -25,18 +25,18 @@ def build_guesser_prompt(history: List[Tuple[int, str, str]], last_dunno: str) -
     """
     prompt = (
         "You are participating in a guessing game where your goal is to identify a specific character. "
-        "You have been asking questions to narrow down who the character might be. "
+        "You can only ask questions that can be answered with 'Yes' or 'No'. "
     )
     
     if history:
         game_history = generate_game_history(history)
         prompt += (
-            "Below are the questions you have asked so far and their corresponding answers.\n\n"
+            "Below are the questions you have asked so far and their corresponding answers.\n"
             f"{game_history}\n\n"
             "Remember to consider all previous questions and answers before forming your next question. "
-            "Do not ask the same question twice. "
-            "Avoid enumerating titles of series or franchises. Instead try to narrow down the character by asking about their traits or actions. "
-            "You can only ask one question at a time. "
+            "Do not ask the same question twice. You can only ask one question at a time. "
+            "Avoid enumerating titles of series or franchises. Instead try to narrow down the character "
+            "by asking about their traits or actions. "
             "If based on the questions and answers so far, you know the character, provide its name. "
             "Don't ask excessive questions if you already have a good idea of the character. Just provide its name. "
         )
@@ -44,14 +44,14 @@ def build_guesser_prompt(history: List[Tuple[int, str, str]], last_dunno: str) -
         if last_dunno:
             prompt += (
                 "The last question you asked was either too vague, ambiguous, or not directly related to identifying the character. "
-                "Please rephrase or clarify your question so that it can be answered with a clear 'Yes' or 'No.' "
+                "Please rephrase or clarify your question so that it can be answered with a clear 'Yes' or 'No'. "
             )
 
         prompt += "What is your next question? "
     else:
         prompt += "What is your first question? "
 
-    prompt += "Provide only question, do not include any other text."
+    prompt += "Provide only the question, do not include any other text."
 
     return prompt
 
@@ -68,12 +68,13 @@ def build_judge_prompt(character: str, history: List[Tuple[int, str, str]], ques
         str: The prompt for the judge model.
     """
     prompt = (
-        "You are participating in a guessing game where another model will attempt to guess a specific character "
-        "by asking closed questions. Your role is to answer questions based on your knowledge of the character.\n\n"
-        f"The character is: {character}.\n\n"
-        "Respond with 'Yes' or 'No' based on the accuracy of the question in relation to the character. "
+        "You are participating in a guessing game where another person attempts to guess a specific character "
+        "by asking closed yes/no questions. Your role is to answer the questions based on your knowledge of the character. "
+        f"The character is: {character}.\n"
+        "Respond with 'Yes' or 'No' based on the accuracy of the question about the character. "
         "Your answers must be consistent with the character's traits, actions, and known information. "
-        "Answer with 'Bravo' if the question is clear, specific, and the character name is directlymentioned in the question. "
+        "Answer with 'Bravo' if the question properly names the character. "
+        "Its name must be directly mentioned in the question. "
         "If the question is unclear, too vague, or does not directly apply to the character, respond with 'Dunno'. "
         "If more than one question is asked, respond with 'Dunno'. "
     )

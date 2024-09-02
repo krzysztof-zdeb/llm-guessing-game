@@ -25,14 +25,6 @@ class GuessingGame:
         
         """
 
-        self.db.remove_game_round(19)
-        self.db.remove_game_round(20)
-        self.db.remove_game_round(21)
-        self.db.remove_game_round(28)
-        self.db.remove_game_round(29)
-        self.db.remove_game_round(30)
-
-
         for character in self.characters:
             logger.info(f"=== New character: {character.primary} ===")
             
@@ -46,7 +38,7 @@ class GuessingGame:
                     self.history = []
 
                     # Insert dummy record
-                    round_sk = self.db.insert_game_round(character.primary, guesser_model)
+                    round_sk = self.db.insert_game_round(character.primary, guesser_model, self.judge_model)
 
                     while question_count < self.max_questions:
                         question_count += 1
@@ -61,18 +53,20 @@ class GuessingGame:
                         logger.info(f"Q#{question_count}: {question}")
 
                         answer = self._get_answer(character, question)
-                        if answer.lower() == "bravo" and not self._is_correct_guess(character, question):
+                    
+                        if answer.lower().startswith("bravo") and not self._is_correct_guess(character, question):
                             # Change the answer to "yes" if the character name is not in the answer
                             answer = "Yes"
                         logger.info(f"A: {answer}")
-                        if answer.lower() == "bravo":
+                        
+                        if answer.lower().startswith("bravo"):
                             logger.info(f"{guesser_model} has guessed correctly!")
                             # Update the game round record
                             self.history.append((question_count, question, answer))
                             self.db.update_game_round(round_sk, question_count, True)
                             break
 
-                        if answer.lower() == "dunno":
+                        if answer.lower().startswith("dunno"):
                             self.last_dunno = question
                         else:
                             self.history.append((question_count, question, answer))
