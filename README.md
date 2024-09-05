@@ -1,5 +1,7 @@
 # Character Guessing Game for LLMs
 
+<img src="img/forehead-detective-cover.png" alt="Forehead Detective Cover" width="50%"/>
+
 This project implements a character guessing game using OpenAI's GPT models. The game involves AI models trying to guess a character by asking yes/no questions.
 
 ## Description
