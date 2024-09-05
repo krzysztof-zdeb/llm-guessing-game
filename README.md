@@ -6,7 +6,7 @@ This project implements a character guessing game using OpenAI's GPT models. The
 
 The Character Guessing Game is an AI-powered game where different GPT models attempt to guess a character by asking a series of yes/no questions. The game is designed to showcase the reasoning capabilities of various AI models and how they approach problem-solving.
 
-For a detailed explanation of the project and its implementation, check out the article on Medium (link to be provided).
+For a detailed explanation of the project and its implementation, check out the article on Medium: https://towardsdatascience.com/gpts-and-the-forehead-detective-ea05440c2c63
 
 ## Prerequisites
 
